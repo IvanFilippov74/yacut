@@ -1,25 +1,29 @@
 import re
 
-from settings import NO_ID, NOT_FOUND, NO_URL, ERROR_LENGTH, ERROR_VALUE
-from .error_handlers import InvalidAPIUsage
+from settings import ERROR_LENGTH, ERROR_VALUE, NO_ID, NO_URL, NOT_FOUND
+
+from .error_handlers import InvalidAPIUsageError
 from .models import URLMap
+
 
 def valid_404(url_short):
     url = URLMap.query.filter_by(short=url_short).first()
     if not url:
-        raise InvalidAPIUsage(NO_ID, 404)
+        raise InvalidAPIUsageError(NO_ID, 404)
     return url.original
+
 
 def valid_data(data):
     if not data:
-        raise InvalidAPIUsage(NOT_FOUND)
+        raise InvalidAPIUsageError(NOT_FOUND)
     if 'url' not in data:
-        raise InvalidAPIUsage(NO_URL)
-    return None
+        raise InvalidAPIUsageError(NO_URL)
+    return False
+
 
 def valid_short_id(short_id):
     if not re.search(r'^[a-zA-Z0-9]*\Z', short_id) or len(short_id) > 16:
-        raise InvalidAPIUsage(ERROR_VALUE)
+        raise InvalidAPIUsageError(ERROR_VALUE)
     if URLMap.query.filter_by(short=short_id).first():
-        raise InvalidAPIUsage(ERROR_LENGTH)
-    return None
+        raise InvalidAPIUsageError(ERROR_LENGTH)
+    return False

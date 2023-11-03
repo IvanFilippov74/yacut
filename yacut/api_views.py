@@ -2,8 +2,8 @@ from flask import jsonify, request
 
 from . import app, db
 from .models import URLMap
-from .validators import valid_short_id, valid_data, valid_404
 from .utils import get_unique_short_id
+from .validators import valid_404, valid_data, valid_short_id
 
 
 @app.route('/api/id/<string:url_short>/', methods=['GET'])

@@ -1,6 +1,7 @@
 from flask import flash, redirect, render_template, url_for
 
 from settings import ERROR_LENGTH
+
 from . import app, db
 from .forms import URLMapForm
 from .models import URLMap
