@@ -5,7 +5,7 @@ from settings import ERROR_LENGTH
 from . import app, db
 from .forms import URLMapForm
 from .models import URLMap
-from .utils import get_unique_short_id
+from .utils import get_unique_short_id, year
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -25,8 +25,7 @@ def index_view():
         db.session.add(short_link)
         db.session.commit()
         flash(url_for('get_short_url', url_short=url_short, _external=True), 'get_link')
-
-    return render_template('index.html', form=form)
+    return render_template('index.html', form=form, year=year())
 
 
 @app.route('/<string:url_short>')

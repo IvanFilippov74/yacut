@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from flask import jsonify, request
 
 from . import app, db
@@ -8,7 +10,7 @@ from .validators import valid_404, valid_data, valid_short_id
 
 @app.route('/api/id/<string:url_short>/', methods=['GET'])
 def get_opinion(url_short):
-    return jsonify({'url': valid_404(url_short)}), 200
+    return jsonify({'url': valid_404(url_short)}), HTTPStatus.OK
 
 
 @app.route('/api/id/', methods=['POST'])
@@ -24,4 +26,4 @@ def add_opinion():
     url.from_dict(data)
     db.session.add(url)
     db.session.commit()
-    return jsonify(url.to_dict()), 201
+    return jsonify(url.to_dict()), HTTPStatus.CREATED

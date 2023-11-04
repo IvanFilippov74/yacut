@@ -1,4 +1,5 @@
 import random
+from datetime import datetime as dt
 from string import ascii_letters, digits
 
 from .models import URLMap
@@ -14,3 +15,8 @@ def get_unique_short_id():
     if check_unique_short_id(rand_string):
         get_unique_short_id()
     return rand_string
+
+
+def year():
+    now_year = dt.now()
+    return now_year.year
