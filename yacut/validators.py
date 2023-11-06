@@ -1,4 +1,5 @@
 import re
+from http import HTTPStatus
 
 from settings import ERROR_LENGTH, ERROR_VALUE, NO_ID, NO_URL, NOT_FOUND
 
@@ -9,7 +10,7 @@ from .models import URLMap
 def valid_404(url_short):
     url = URLMap.query.filter_by(short=url_short).first()
     if not url:
-        raise InvalidAPIUsageError(NO_ID, 404)
+        raise InvalidAPIUsageError(NO_ID, HTTPStatus.NOT_FOUND)
     return url.original
 
 
@@ -18,7 +19,6 @@ def valid_data(data):
         raise InvalidAPIUsageError(NOT_FOUND)
     if 'url' not in data:
         raise InvalidAPIUsageError(NO_URL)
-    return False
 
 
 def valid_short_id(short_id):
@@ -26,4 +26,3 @@ def valid_short_id(short_id):
         raise InvalidAPIUsageError(ERROR_VALUE)
     if URLMap.query.filter_by(short=short_id).first():
         raise InvalidAPIUsageError(ERROR_LENGTH)
-    return False
